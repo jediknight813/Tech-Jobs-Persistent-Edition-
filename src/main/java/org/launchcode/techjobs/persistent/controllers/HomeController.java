@@ -1,5 +1,4 @@
 package org.launchcode.techjobs.persistent.controllers;
-
 import org.launchcode.techjobs.persistent.models.Employer;
 import org.launchcode.techjobs.persistent.models.Job;
 import org.launchcode.techjobs.persistent.models.Skill;
@@ -11,14 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Created by LaunchCode
- */
+
 @Controller
 public class HomeController {
 
@@ -67,13 +63,12 @@ public class HomeController {
         }
 
 
-        System.out.println(skills);
-        List<Skill> skill_list = (List<Skill>) skillRepository.findAllById(skills);
-        newJob.setSkills(skill_list);
+        List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
+        newJob.setSkills(skillObjs);
 
         System.out.println(newJob.getId());
-        System.out.println(newJob.getSkills());
         System.out.println(newJob.getEmployer());
+        System.out.println(skillObjs);
         System.out.println(newJob.getName());
 
         jobRepository.save(newJob);
@@ -86,9 +81,7 @@ public class HomeController {
 
     @GetMapping("view/{jobId}")
     public String displayViewJob(Model model, @PathVariable int jobId) {
-
         model.addAttribute("title", "My Jobs");
-//      model.addAttribute("jobs", jobRepository.findAll());
         Optional<Job> jobs = jobRepository.findById(jobId);
         if (jobs.isPresent()) {
             Job job = jobs.get();
